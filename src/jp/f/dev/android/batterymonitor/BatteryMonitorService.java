@@ -16,20 +16,19 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
 import android.util.Log;
 
 public final class BatteryMonitorService extends IntentService {
 
     private static final String TAG = "BatteryMonitorService";
     static final String ACTION_TIMER = BatteryMonitorService.class.getName()
-            + "action.TIMER";
+            + ".action.TIMER";
     static final String ACTION_START = BatteryMonitorService.class.getName()
-            + "action.START";
+            + ".action.START";
     static final String ACTION_STOP = BatteryMonitorService.class.getName()
-            + "action.STOP";
+            + ".action.STOP";
     static final String EXTRA_PERIOD = BatteryMonitorService.class.getName()
-            + "extra.PERIOD";
+            + ".extra.PERIOD";
     private static final int NOTIFICATION_ID = 1;
 
     // 30 sec. For first time lag for starting service.

@@ -3,24 +3,20 @@ package jp.f.dev.android.batterymonitor;
 import java.io.File;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.BatteryManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class BatteryMonitorActivity extends Activity {
+public final class BatteryMonitorActivity extends Activity {
 
     private static final String TAG = "BatteryMonitorActivity";
 
