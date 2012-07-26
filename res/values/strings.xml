@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Battery Monitor</string>
+    <string name="description">This application recodes battery levels and stores it to SD card. Tap button to start recording.</string>
+    <string name="battery_level">Battery Level</string>
+    <string name="notification_description">Recording Battery Status</string>
+    <string name="file_name_description">"File Name : "</string>
+    <string name="menu_delete">Delete File</string>
+    <string name="menu_share">Share File</string>
+    <string name="toast_file_deleted">File Deleted</string>
+
+</resources>
