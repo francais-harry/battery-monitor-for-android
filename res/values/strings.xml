@@ -8,6 +8,12 @@
     <string name="file_name_description">"File Name : "</string>
     <string name="menu_delete">Delete File</string>
     <string name="menu_share">Share File</string>
+    <string name="menu_about">About</string>
     <string name="toast_file_deleted">File Deleted</string>
-
+    <string name="button_change_period">Change record period</string>
+    <string-array name="spinner_period_items">
+        <item>Every 15 min.</item>
+        <item>Every 30 min.</item>
+        <item>Every 60 min.</item>
+    </string-array>
 </resources>

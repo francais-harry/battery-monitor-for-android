@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -27,6 +28,8 @@ public final class BatteryMonitorService extends IntentService {
             + ".action.START";
     static final String ACTION_STOP = BatteryMonitorService.class.getName()
             + ".action.STOP";
+    static final String ACTION_SET_PERIOD = BatteryMonitorService.class.getName()
+            + ".action.SET_PERIOD";
     static final String EXTRA_PERIOD = BatteryMonitorService.class.getName()
             + ".extra.PERIOD";
     private static final int NOTIFICATION_ID = 1;
@@ -40,11 +43,18 @@ public final class BatteryMonitorService extends IntentService {
 
     @Override
     protected final void onHandleIntent(Intent intent) {
-        Log.d(TAG, "onHandleIntent in action = " + intent.getAction());
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "onHandleIntent in action = " + intent.getAction());
+        }
 
         if (ACTION_START.equals(intent.getAction())) {
             recordBatteryState();
-            startTimer(AlarmManager.INTERVAL_FIFTEEN_MINUTES);
+            final long monitorPeriod = ((BatteryMonitorApplication) getApplication())
+                    .getMonitorPeriod();
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "Monitoring period retrieved. " + monitorPeriod);
+            }
+            startTimer(monitorPeriod);
             startNotification();
             ((BatteryMonitorApplication) getApplication())
                     .setMonitorStatus(true);
@@ -56,15 +66,29 @@ public final class BatteryMonitorService extends IntentService {
                     .setMonitorStatus(false);
         } else if (ACTION_TIMER.equals(intent.getAction())) {
             recordBatteryState();
+        } else if (ACTION_SET_PERIOD.equals(intent.getAction())) {
+            setMonitoringPeriod(intent);
         }
 
         stopSelf();
+    }
+    
+    private void setMonitoringPeriod(Intent intent) {
+        final long period = intent.getLongExtra(EXTRA_PERIOD,
+                Util.DEFAULT_PERIOD);
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "setMonitoringPeriod period = " + period);
+        }
+        ((BatteryMonitorApplication) getApplication())
+        .setMonitoringPeriod(period);
     }
 
     private void recordBatteryState() {
         final int batteryLevel = Util
                 .getCurrentBatteryLevel(getApplicationContext());
-        Log.d(TAG, "recordBatteryState batteryLevel = " + batteryLevel);
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "recordBatteryState batteryLevel = " + batteryLevel);
+        }
         File file = new File(Util.FILE_PATH);
         try {
             OutputStream stream = new BufferedOutputStream(
@@ -74,7 +98,7 @@ public final class BatteryMonitorService extends IntentService {
 
             // yyyy/MM/dd,HH:mm:ss,bat
             StringBuilder builder = new StringBuilder()
-                    .append(new SimpleDateFormat("yyyy/MM/dd','HH:mm:ss")
+                    .append(new SimpleDateFormat("yyyy/MM/dd','HH:mm:ss", Locale.US)
                             .format(new Date(System.currentTimeMillis())))
                     .append(",").append(batteryLevel).append("\n");
 
@@ -83,7 +107,9 @@ public final class BatteryMonitorService extends IntentService {
             streamWriter.close();
             stream.close();
         } catch (IOException e) {
-            Log.w(TAG, "IOException", e);
+            if (BuildConfig.DEBUG) {
+                Log.w(TAG, "IOException", e);
+            }
         }
     }
 

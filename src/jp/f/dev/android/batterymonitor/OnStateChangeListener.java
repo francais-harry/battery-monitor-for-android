@@ -2,6 +2,6 @@ package jp.f.dev.android.batterymonitor;
 
 public interface OnStateChangeListener {
 
-    void onStateChanged(boolean newState);
+    void onStateChanged(boolean newState, long newPeriod);
 
 }
